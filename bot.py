@@ -8,6 +8,7 @@ from discord.ext import commands
 
 
 DATA_FILE = Path(os.getenv("CRAFTING_DATA_FILE", "crafting_data.json"))
+ALLOWED_CHANNEL_ID = os.getenv("DISCORD_CHANNEL_ID")
 
 
 def load_data() -> dict:
@@ -45,6 +46,20 @@ def find_crafters(crafters: list[dict], character_name: str) -> list[dict]:
     ]
 
 
+async def ensure_allowed_channel(interaction: discord.Interaction) -> bool:
+    if not ALLOWED_CHANNEL_ID:
+        return True
+
+    if interaction.channel_id == int(ALLOWED_CHANNEL_ID):
+        return True
+
+    await interaction.response.send_message(
+        f"This bot can only be used in <#{ALLOWED_CHANNEL_ID}>.",
+        ephemeral=True,
+    )
+    return False
+
+
 intents = discord.Intents.default()
 
 bot = commands.Bot(command_prefix=commands.when_mentioned, intents=intents)
@@ -76,6 +91,9 @@ async def on_ready() -> None:
 async def addcraft(
     interaction: discord.Interaction, character_name: str, profession: str
 ) -> None:
+    if not await ensure_allowed_channel(interaction):
+        return
+
     data = load_data()
     crafters = [normalize_crafter(entry) for entry in data.get("crafters", [])]
 
@@ -108,6 +126,9 @@ async def addcraft(
 async def listcraft(
     interaction: discord.Interaction, character_name: str | None = None
 ) -> None:
+    if not await ensure_allowed_channel(interaction):
+        return
+
     data = load_data()
     crafters = [normalize_crafter(entry) for entry in data.get("crafters", [])]
 
@@ -159,6 +180,9 @@ async def listcraft(
 async def listitems(
     interaction: discord.Interaction, character_name: str, profession: str
 ) -> None:
+    if not await ensure_allowed_channel(interaction):
+        return
+
     data = load_data()
     crafters = [normalize_crafter(entry) for entry in data.get("crafters", [])]
 
@@ -197,6 +221,9 @@ async def listitems(
 async def additem(
     interaction: discord.Interaction, character_name: str, profession: str, item_name: str
 ) -> None:
+    if not await ensure_allowed_channel(interaction):
+        return
+
     data = load_data()
     crafters = [normalize_crafter(entry) for entry in data.get("crafters", [])]
 
@@ -243,6 +270,9 @@ async def additem(
 async def removeitem(
     interaction: discord.Interaction, character_name: str, profession: str, item_name: str
 ) -> None:
+    if not await ensure_allowed_channel(interaction):
+        return
+
     data = load_data()
     crafters = [normalize_crafter(entry) for entry in data.get("crafters", [])]
 
@@ -284,6 +314,9 @@ async def removeitem(
 @bot.tree.command(name="removecraft", description="Remove saved crafting entries by character name.")
 @app_commands.describe(character_name="The WoW character name to remove")
 async def removecraft(interaction: discord.Interaction, character_name: str) -> None:
+    if not await ensure_allowed_channel(interaction):
+        return
+
     data = load_data()
     crafters = [normalize_crafter(entry) for entry in data.get("crafters", [])]
 

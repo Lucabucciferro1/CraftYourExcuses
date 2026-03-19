@@ -6,6 +6,7 @@ services:
     environment:
       DISCORD_TOKEN: your-bot-token-here
       DISCORD_GUILD_ID: your-server-id-here
+      DISCORD_CHANNEL_ID: your-channel-id-here
       CRAFTING_DATA_FILE: /data/crafting_data.json
     volumes:
       - /DATA/AppData/wow-crafting-bot/data:/data

@@ -69,7 +69,13 @@ $env:DISCORD_TOKEN="your-bot-token-here"
 $env:DISCORD_GUILD_ID="your-server-id-here"
 ```
 
-7. Run the bot:
+7. Optional: limit the bot to one channel:
+
+```powershell
+$env:DISCORD_CHANNEL_ID="your-channel-id-here"
+```
+
+8. Run the bot:
 
 ```powershell
 python bot.py
@@ -110,6 +116,7 @@ Then edit `docker-compose.yml` and set:
 ```yaml
 DISCORD_TOKEN: your-bot-token-here
 DISCORD_GUILD_ID: your-server-id-here
+DISCORD_CHANNEL_ID: your-channel-id-here
 ```
 
 You can also change the host data folder if your CasaOS machine uses a different path:
@@ -124,6 +131,7 @@ You can also change the host data folder if your CasaOS machine uses a different
 2. In the package settings, make sure the container package is visible to the system that will pull it.
 3. In CasaOS, use the custom compose/app option and load `docker-compose.yml`.
 4. Set your real `DISCORD_TOKEN` and `DISCORD_GUILD_ID`.
-5. Start the app.
+5. Optional: set `DISCORD_CHANNEL_ID` to the one channel the bot should allow.
+6. Start the app.
 
 The bot data will be stored in the mounted CasaOS folder, so `crafting_data.json` survives container restarts.
