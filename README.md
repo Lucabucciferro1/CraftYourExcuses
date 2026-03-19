@@ -93,21 +93,37 @@ Files included for that:
 
 - `Dockerfile`
 - `docker-compose.yml`
+- `.github/workflows/docker-publish.yml`
 
 ### Before you deploy
 
-Edit `docker-compose.yml` and set:
+Push the repo to GitHub and let GitHub Actions publish the container image to GitHub Container Registry.
+
+The workflow publishes:
+
+```text
+ghcr.io/lucabucciferro1/craftyourexcuses:latest
+```
+
+Then edit `docker-compose.yml` and set:
 
 ```yaml
 DISCORD_TOKEN: your-bot-token-here
 DISCORD_GUILD_ID: your-server-id-here
 ```
 
+You can also change the host data folder if your CasaOS machine uses a different path:
+
+```yaml
+/DATA/AppData/wow-crafting-bot/data:/data
+```
+
 ### CasaOS deployment
 
-1. Copy this project folder to your CasaOS machine.
-2. In CasaOS, open the terminal or file manager and go to the project folder.
-3. Use the custom compose/app option in CasaOS and load `docker-compose.yml`.
-4. Start the app.
+1. In GitHub, open the `Actions` tab and let the `Publish Docker Image` workflow run once.
+2. In the package settings, make sure the container package is visible to the system that will pull it.
+3. In CasaOS, use the custom compose/app option and load `docker-compose.yml`.
+4. Set your real `DISCORD_TOKEN` and `DISCORD_GUILD_ID`.
+5. Start the app.
 
-The bot data will be stored in the `data` folder next to the compose file, so your `crafting_data.json` survives container restarts.
+The bot data will be stored in the mounted CasaOS folder, so `crafting_data.json` survives container restarts.

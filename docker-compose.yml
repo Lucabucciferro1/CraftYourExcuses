@@ -1,7 +1,6 @@
 services:
   wow-crafting-bot:
-    build:
-      context: .
+    image: ghcr.io/lucabucciferro1/craftyourexcuses:latest
     container_name: wow-crafting-bot
     restart: unless-stopped
     environment:
@@ -9,4 +8,4 @@ services:
       DISCORD_GUILD_ID: your-server-id-here
       CRAFTING_DATA_FILE: /data/crafting_data.json
     volumes:
-      - ./data:/data
+      - /DATA/AppData/wow-crafting-bot/data:/data
