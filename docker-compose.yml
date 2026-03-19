@@ -1,0 +1,12 @@
+services:
+  wow-crafting-bot:
+    build:
+      context: .
+    container_name: wow-crafting-bot
+    restart: unless-stopped
+    environment:
+      DISCORD_TOKEN: your-bot-token-here
+      DISCORD_GUILD_ID: your-server-id-here
+      CRAFTING_DATA_FILE: /data/crafting_data.json
+    volumes:
+      - ./data:/data
